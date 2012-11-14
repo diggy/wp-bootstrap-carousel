@@ -299,7 +299,7 @@ a.carousel-control:focus{outline:none}
     {
         $plugin = plugin_basename( __FILE__ );
         if ( $plugin === $file ) {
-            $url = 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WAY79HJWYKPQE';
+            $url = 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JMEK9E362ALYJ';
             $links[] = sprintf( __( '<a href="%1$s">Donate</a>', 'wp_bootstrap_carousel' ), esc_url( $url ) );
         }
         return $links;
