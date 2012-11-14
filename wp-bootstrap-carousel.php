@@ -278,11 +278,12 @@ class WP_Bootstrap_Carousel
         $style = '';
         $style .= apply_filters( 
             'wp_bootstrap_carousel_extra_style', 
-            '<style type="text/css">.carousel-comments-link{float:' . $rtl . ';clear:' . $rtl . '}
+            '<style type="text/css">.carousel,.carousel a:link,.carousel a:hover,.carousel a:visited{color:#fff !important}
 a.carousel-control{text-decoration:none;font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;font-weight:100;}
 a.carousel-control:focus{outline:none}
-.carousel-comments-link a{color:#fff;font-weight:normal;text-decoration:none}
-.carousel-caption h4 a{color:#fff;text-decoration:none}</style>', $rtl
+.carousel-comments-link{float:' . $rtl . ';clear:' . $rtl . '}
+.carousel-comments-link a:link,.carousel-comments-link a:visited,.carousel-comments-link a:hover{color:#fff;font-weight:normal;text-decoration:none}
+.carousel-caption h4, .carousel-caption h4 a:link {color:#fff !important;text-decoration:none !important}</style>', $rtl
         );
         
         return $style;
