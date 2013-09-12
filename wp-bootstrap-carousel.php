@@ -92,11 +92,10 @@ class WP_Bootstrap_Carousel
         $vars       = (array) $data['vars'];
         $parent     = isset( $vars['id'] ) && (int) $vars['id'] ? (int) $vars['id'] : '';
         $width_int  = str_replace( array( '%', 'px' ), '', $vars['width'] );
-        $style      = $this->style();
 
         global $post;
         
-        if( ! $parent || ! $items )
+        if( ! ( $parent || $items ) )
             return apply_filters( 'wp_bootstrap_carousel_no_results', false );
 
         if( is_feed() )
@@ -106,15 +105,29 @@ class WP_Bootstrap_Carousel
                 $vars
             );
 
-        $this->enqueue( $vars['interval'], $vars['pause'], $vars['thickbox'] );
+        $this->enqueue( $vars['interval'], $vars['pause'], $vars['wrap'], $vars['thickbox'] );
 
         $carousel = '';
 
-        $carousel .= $style;
+        $carousel .= '<div id="wp-bootstrap-carousel-' . $vars['id'] . '" class="carousel' . ( ( $vars['slide'] ) ? " slide" : "" ) . '" style="width:' . $width_int . 'px;">';
 
-        $carousel .= '<div id="wp-bootstrap-carousel-' . $vars['id'] . '" class="carousel' . ( ( $vars['slide'] ) ? " slide" : "" ) . '" style="width:' . $width_int . 'px;">
-  <!-- Carousel items -->
-  <div class="carousel-inner">';
+        /**
+         * INDICATORS
+         */
+        $carousel .= '<ol class="carousel-indicators">';
+
+        $o = 0;
+        foreach ( $items as $item )
+        {
+            $carousel .= '<li data-target="#wp-bootstrap-carousel-' . $vars['id'] . '" data-slide-to="' . $o . '" class="' . ( ( $o == 0 ) ? "active" : "" ) . '"></li>';
+            $o++;
+        }
+        $carousel .= '</ol>';
+
+        /**
+         * ITEMS
+         */
+        $carousel .= '<div class="carousel-inner">';
 
         $i = 0;
         foreach ( $items as $item_id => $item )
@@ -129,7 +142,7 @@ class WP_Bootstrap_Carousel
 
             $carousel .= '<div class="carousel-caption">';
 
-            $carousel .= '<h4>' . $item->post_title;
+            $carousel .= '<h3>' . $item->post_title;
 
             if( $vars['comments'] && comments_open( $item_id ) ) :
 
@@ -141,7 +154,7 @@ class WP_Bootstrap_Carousel
 
             endif;
 
-            $carousel .= '</h4>';
+            $carousel .= '</h3>';
 
             $carousel .= apply_filters( 'wp_bootstrap_carousel_caption_text', $text, $item_id );
 
@@ -154,14 +167,18 @@ class WP_Bootstrap_Carousel
 
         $carousel .= '</div><!-- .carousel-inner -->';
 
+        /**
+         * CONTROLS
+         */
         if( $vars['controls'] ) :
 
         $carousel .= '<!-- Carousel nav -->
-  <a class="carousel-control left" href="#wp-bootstrap-carousel-' . $vars['id'] . '" data-slide="prev">' . __( '&lsaquo;', 'wp_bootstrap_carousel' ) . '</a>
-  <a class="carousel-control right" href="#wp-bootstrap-carousel-' . $vars['id'] . '" data-slide="next">' . __( '&rsaquo;', 'wp_bootstrap_carousel' ) . '</a>
-</div>';
+  <a class="carousel-control left" href="#wp-bootstrap-carousel-' . $vars['id'] . '" data-slide="prev"><span class="icon-prev"></span></a>
+  <a class="carousel-control right" href="#wp-bootstrap-carousel-' . $vars['id'] . '" data-slide="next"><span class="icon-next"></span></a>';
 
         endif;
+
+        $carousel .= '</div><!-- .carousel -->';
 
         return $carousel;
     }
@@ -192,6 +209,7 @@ class WP_Bootstrap_Carousel
 
             'interval'          => 5000,
             'pause'             => 'hover',
+            'wrap'              => 1,
             'thickbox'          => 1,
             
         ) ), $atts);
@@ -220,6 +238,7 @@ class WP_Bootstrap_Carousel
         // js vars
         $interval       = intval( $atts['interval'] );
         $pause          = sanitize_text_field( $atts['pause'] );
+        $wrap           = (bool)$atts['wrap'];
         $thickbox       = (bool)$atts['thickbox'];
 
         // query vars array
@@ -246,6 +265,7 @@ class WP_Bootstrap_Carousel
 
             'interval'          => $interval,
             'pause'             => $pause,
+            'wrap'              => $wrap,
             'thickbox'          => $thickbox,
         );
 
@@ -257,7 +277,7 @@ class WP_Bootstrap_Carousel
 
         return $data;
     }
-    public function enqueue( $interval, $pause, $thickbox )
+    public function enqueue( $interval, $pause, $wrap, $thickbox )
     {
         $min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
@@ -265,9 +285,9 @@ class WP_Bootstrap_Carousel
         wp_enqueue_script( 'jquery' );
 
         // bootstrap styles & scripts
-        wp_enqueue_style( 'wp-bootstrap-carousel', $this->plugin_dir_url . 'css/carousel' . $min . '.css', array(), NULL, 'screen' );
-        wp_enqueue_script( 'wp-bootstrap-carousel', $this->plugin_dir_url . 'js/carousel' . $min . '.js', array( 'jquery' ), NULL, true );
-        wp_enqueue_script( 'wp-bootstrap-carousel-init', $this->plugin_dir_url . 'js/carousel-init.js', array( 'jquery', 'wp-bootstrap-carousel' ), NULL, true );
+        wp_enqueue_style( 'wp-bootstrap-carousel', $this->plugin_dir_url . 'css/carousel' . $min . '.css', array(), '3.0.0', 'screen' );
+        wp_enqueue_script( 'wp-bootstrap-carousel', $this->plugin_dir_url . 'js/carousel' . $min . '.js', array( 'jquery' ), '3.0.0', true );
+        wp_enqueue_script( 'wp-bootstrap-carousel-init', $this->plugin_dir_url . 'js/carousel-init.js', array( 'jquery', 'wp-bootstrap-carousel' ), $this->version, true );
 
         // thickbox styles & script
         if( $thickbox ) :
@@ -279,8 +299,9 @@ class WP_Bootstrap_Carousel
 
         // JS variables
         $wp_bootstrap_carousel_js_vars = array(
-            'interval' 	=> $interval,
-            'pause' 	=> $pause
+            'interval'  => $interval,
+            'pause'     => $pause,
+            'wrap'      => $wrap
         );
 
         wp_localize_script(
@@ -291,23 +312,6 @@ class WP_Bootstrap_Carousel
 
         // action hook
         do_action( 'wp_bootstrap_carousel_enqueue' );
-    }
-    function style()
-    {
-        $rtl = ( ( is_rtl() ) ? "left" : "right" );
-
-        $style = '';
-        $style .= apply_filters( 
-            'wp_bootstrap_carousel_extra_style', 
-            '<style type="text/css">.carousel,.carousel a:link,.carousel a:hover,.carousel a:visited{color:#fff !important}
-a.carousel-control{text-decoration:none;font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;font-weight:100;}
-a.carousel-control:focus{outline:none}
-.carousel-comments-link{float:' . $rtl . ';clear:' . $rtl . '}
-.carousel-comments-link a:link,.carousel-comments-link a:visited,.carousel-comments-link a:hover{color:#fff;font-weight:normal;text-decoration:none}
-.carousel-caption h4, .carousel-caption h4 a:link {color:#fff !important;text-decoration:none !important}</style>', $rtl
-        );
-
-        return $style;
     }
     public function be_display_posts_plugin()
     {

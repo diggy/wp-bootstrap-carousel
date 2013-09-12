@@ -3,7 +3,7 @@ Contributors: donutz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JMEK9E362ALYJ
 Tags: bootstrap, slideshow, carousel, images, gallery, shortcode
 Requires at least: 3.3
-Tested up to: 3.5.1
+Tested up to: 3.6.1
 Stable tag: 0.1.1
 License: GPLv3
 
@@ -61,7 +61,10 @@ Checkout and contribute to the plugin source code on [GitHub](https://github.com
 
 = 0.1.2 - 12/09/2013 = 
 * localization support
+* update JS and CSS to Bootstrap 3.0.0
+* added wrap parameter
 * added controls parameter
+* deprecated wp_bootstrap_carousel_extra_style filter
 
 = 0.1.1 - 13/11/2012 = 
 * Initial release 0.1.1
