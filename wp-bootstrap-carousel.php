@@ -144,12 +144,17 @@ class WP_Bootstrap_Carousel
             $i++;
         }
         
-        $carousel .= '</div><!-- .carousel-inner -->
-  <!-- Carousel nav -->
+        $carousel .= '</div><!-- .carousel-inner -->';
+
+        if( $vars['controls'] ) :
+
+        $carousel .= '<!-- Carousel nav -->
   <a class="carousel-control left" href="#wp-bootstrap-carousel-' . $vars['id'] . '" data-slide="prev">' . __( '&lsaquo;', 'wp_bootstrap_carousel' ) . '</a>
   <a class="carousel-control right" href="#wp-bootstrap-carousel-' . $vars['id'] . '" data-slide="next">' . __( '&rsaquo;', 'wp_bootstrap_carousel' ) . '</a>
 </div>';
-        
+
+        endif;
+
         return $carousel;
     }
     public function get_data( $atts )
@@ -175,6 +180,7 @@ class WP_Bootstrap_Carousel
             'file'              => 1,
             'comments'          => 1,
             'slide'             => 1,
+            'controls'          => 1,
             
             'interval'          => 5000,
             'pause'             => 'hover',
@@ -201,6 +207,7 @@ class WP_Bootstrap_Carousel
         $file           = (bool)$atts['file'];
         $comments       = (bool)$atts['comments'];
         $slide          = (bool)$atts['slide'];
+        $controls       = (bool)$atts['controls'];
         
         // js vars
         $interval       = intval( $atts['interval'] );
@@ -227,6 +234,7 @@ class WP_Bootstrap_Carousel
             'file'              => $file,
             'comments'          => $comments,
             'slide'             => $slide,
+            'controls'          => $controls,
 
             'interval'          => $interval,
             'pause'             => $pause,
@@ -266,7 +274,12 @@ class WP_Bootstrap_Carousel
             'interval' 	=> $interval,
             'pause' 	=> $pause
         );
-        wp_localize_script( 'wp-bootstrap-carousel-init', 'wp_bootstrap_carousel_js_vars', apply_filters( 'wp_bootstrap_carousel_js_vars', $wp_bootstrap_carousel_js_vars ) );
+
+        wp_localize_script(
+            'wp-bootstrap-carousel-init',
+            'wp_bootstrap_carousel_js_vars',
+            apply_filters( 'wp_bootstrap_carousel_js_vars', $wp_bootstrap_carousel_js_vars )
+        );
 
         // action hook
         do_action( 'wp_bootstrap_carousel_enqueue' );
