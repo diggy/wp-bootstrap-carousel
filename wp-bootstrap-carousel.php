@@ -105,11 +105,11 @@ class WP_Bootstrap_Carousel
                 $vars
             );
 
-        $this->enqueue( $vars['interval'], $vars['pause'], $vars['wrap'], $vars['thickbox'] );
+        $this->enqueue( $vars['thickbox'] );
 
         $carousel = '';
 
-        $carousel .= '<div id="wp-bootstrap-carousel-' . $vars['id'] . '" class="carousel' . ( ( $vars['slide'] ) ? " slide" : "" ) . '" style="width:' . $width_int . 'px;">';
+        $carousel .= '<div id="wp-bootstrap-carousel-' . $vars['id'] . '" class="carousel' . ( ( $vars['slide'] ) ? " slide" : "" ) . '" style="width:' . $width_int . 'px;" data-interval="' . $vars['interval'] . '" data-pause="' . $vars['pause'] . '" data-wrap="' . $vars['wrap'] . '">';
 
         /**
          * INDICATORS
@@ -207,9 +207,9 @@ class WP_Bootstrap_Carousel
             'slide'             => 1,
             'controls'          => 1,
 
-            'interval'          => 5000,
-            'pause'             => 'hover',
-            'wrap'              => 1,
+            'interval'          => 5000,    // (int) The amount of time to delay between automatically cycling an item. If false, carousel will not automatically cycle.
+            'pause'             => 'hover', // (string) Pauses the cycling of the carousel on mouseenter and resumes the cycling of the carousel on mouseleave.
+            'wrap'              => 1,       // (bool) Whether the carousel should cycle continuously or have hard stops.
             'thickbox'          => 1,
             
         ) ), $atts);
@@ -277,7 +277,7 @@ class WP_Bootstrap_Carousel
 
         return $data;
     }
-    public function enqueue( $interval, $pause, $wrap, $thickbox )
+    public function enqueue( $thickbox )
     {
         $min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
@@ -285,8 +285,8 @@ class WP_Bootstrap_Carousel
         wp_enqueue_script( 'jquery' );
 
         // bootstrap styles & scripts
-        wp_enqueue_style( 'wp-bootstrap-carousel', $this->plugin_dir_url . 'css/carousel' . $min . '.css', array(), '3.0.0', 'screen' );
-        wp_enqueue_script( 'wp-bootstrap-carousel', $this->plugin_dir_url . 'js/carousel' . $min . '.js', array( 'jquery' ), '3.0.0', true );
+        wp_enqueue_style( 'wp-bootstrap-carousel',       $this->plugin_dir_url . 'css/carousel' . $min . '.css', array(), '3.0.0', 'screen' );
+        wp_enqueue_script( 'wp-bootstrap-carousel',      $this->plugin_dir_url . 'js/carousel' . $min . '.js', array( 'jquery' ), '3.0.0', true );
         wp_enqueue_script( 'wp-bootstrap-carousel-init', $this->plugin_dir_url . 'js/carousel-init.js', array( 'jquery', 'wp-bootstrap-carousel' ), $this->version, true );
 
         // thickbox styles & script
@@ -296,19 +296,6 @@ class WP_Bootstrap_Carousel
             wp_enqueue_script( 'thickbox' );
 
         endif;
-
-        // JS variables
-        $wp_bootstrap_carousel_js_vars = array(
-            'interval'  => $interval,
-            'pause'     => $pause,
-            'wrap'      => $wrap
-        );
-
-        wp_localize_script(
-            'wp-bootstrap-carousel-init',
-            'wp_bootstrap_carousel_js_vars',
-            apply_filters( 'wp_bootstrap_carousel_js_vars', $wp_bootstrap_carousel_js_vars )
-        );
 
         // action hook
         do_action( 'wp_bootstrap_carousel_enqueue' );

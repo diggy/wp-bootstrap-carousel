@@ -62,9 +62,11 @@ Checkout and contribute to the plugin source code on [GitHub](https://github.com
 = 0.1.2 - 12/09/2013 = 
 * localization support
 * update JS and CSS to Bootstrap 3.0.0
-* added wrap parameter
-* added controls parameter
-* deprecated wp_bootstrap_carousel_extra_style filter
+* introduce wrap parameter
+* introduce controls parameter
+* use data attributes, abandon script localization
+* deprecate wp_bootstrap_carousel_extra_style filter
+* deprecate wp_bootstrap_carousel_js_vars filter
 
 = 0.1.1 - 13/11/2012 = 
 * Initial release 0.1.1
