@@ -45,7 +45,8 @@ if ( ! class_exists( 'WP_Bootstrap_Carousel' ) ) {
  */
 class WP_Bootstrap_Carousel
 {
-    var $version = '0.1.1';
+    var $version        = '0.1.1';
+    var $plugin_dir     = '';
     var $plugin_dir_url = '';
 
     function WP_Bootstrap_Carousel()
@@ -54,11 +55,14 @@ class WP_Bootstrap_Carousel
     }
     function __construct()
     {
-        $this->plugin_dir_url = trailingslashit( plugins_url( dirname( plugin_basename( __FILE__ ) ) ) );
+        $this->plugin_dir       = trailingslashit( dirname( plugin_basename( __FILE__ ) ) );
+        $this->plugin_dir_url   = trailingslashit( plugins_url( dirname( plugin_basename( __FILE__ ) ) ) );
+
+        add_action( 'init', array( $this, 'i18n' ), 10 );
 
         if ( ! is_admin() || defined( 'DOING_AJAX' ) ) :
 
-            add_action( 'init', array( &$this, 'init' ), 10 );
+            add_action( 'init', array( $this, 'init' ), 10 );
 
             if( function_exists( 'be_display_posts_shortcode' ) )
                 $this->be_display_posts_plugin();
@@ -67,13 +71,17 @@ class WP_Bootstrap_Carousel
 
         if ( is_admin() ) :
 
-            add_filter( 'plugin_row_meta', array( &$this, 'plugin_row_meta' ), 10, 2 );
+            add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 2 );
 
         endif;
     }
+    function i18n()
+    {
+        load_plugin_textdomain( 'wp_bootstrap_carousel', false, $this->plugin_dir . 'lang/' );
+    }
     function init()
     {
-        add_shortcode( 'carousel', array( &$this, 'shortcode' ) );
+        add_shortcode( 'carousel', array( $this, 'shortcode' ) );
 
         do_action( 'wp_bootstrap_carousel_init' );
     }

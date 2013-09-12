@@ -60,6 +60,7 @@ Checkout and contribute to the plugin source code on [GitHub](https://github.com
 == Changelog ==
 
 = 0.1.2 - 12/09/2013 = 
+* localization support
 * added controls parameter
 
 = 0.1.1 - 13/11/2012 = 
