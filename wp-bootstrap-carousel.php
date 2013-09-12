@@ -49,10 +49,9 @@ class WP_Bootstrap_Carousel
     var $plugin_dir     = '';
     var $plugin_dir_url = '';
 
-    function WP_Bootstrap_Carousel()
-    {
-        $this->__construct();
-    }
+    /**
+     * Constructor
+     */
     function __construct()
     {
         $this->plugin_dir       = trailingslashit( dirname( plugin_basename( __FILE__ ) ) );
@@ -74,6 +73,8 @@ class WP_Bootstrap_Carousel
             add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 2 );
 
         endif;
+        
+        do_action( 'wp_bootstrap_carousel_loaded' );
     }
     function i18n()
     {
