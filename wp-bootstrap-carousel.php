@@ -84,6 +84,11 @@ class WP_Bootstrap_Carousel
     }
     function init()
     {
+        global $content_width;
+
+        if( defined( 'WP_USE_THEMES' ) && WP_USE_THEMES && ! isset( $content_width ) )
+            trigger_error( sprintf( __( 'Your WordPress theme is missing the $content_width feature, needed by the WP Bootstrap Carousel plugin. For more information visit %s', 'wp_bootstrap_carousel' ), esc_url( 'http://codex.wordpress.org/Content_Width' ) ), E_USER_NOTICE );
+
         add_shortcode( 'carousel', array( $this, 'shortcode' ) );
 
         do_action( 'wp_bootstrap_carousel_init' );
@@ -199,7 +204,7 @@ class WP_Bootstrap_Carousel
             'order'             => 'ASC',
             'orderby'           => 'ID',
 
-            'width'             => ( isset( $content_width ) ) ? $content_width : '100%',
+            'width'             => ( isset( $content_width ) ) ? $content_width : '300',
             'image_size'        => 'large',
             'rel'               => '',
             'file'              => 1,
