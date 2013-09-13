@@ -69,6 +69,7 @@ Checkout and contribute to the plugin source code on [GitHub](https://github.com
 * deprecate wp_bootstrap_carousel_extra_style filter
 * deprecate wp_bootstrap_carousel_js_vars filter
 * improve performance of display-posts-shortcode addon
+* requires at least wp 3.4
 
 = 0.1.1 - 13/11/2012 = 
 * Initial release 0.1.1
