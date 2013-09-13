@@ -1,3 +1,6 @@
+/**
+ * BOOTSTRAP 3.0.0
+ */
 .carousel {
   position: relative;
 }
@@ -170,4 +173,54 @@
   .carousel-indicators {
     bottom: 20px;
   }
+}
+/**
+ * WORDPRESS
+ */
+.wpbc-twentythirteen .entry-content ol.carousel-indicators,
+.wpbc-twentytwelve .entry-content ol.carousel-indicators {
+    line-height: 1;
+    bottom: 10px;
+    left: 50%;
+    margin-left: -30%;
+}
+.wpbc-twentytwelve .entry-content ol.carousel-indicators li {
+    margin: 1px 1px 1px 1px;
+}
+.wpbc-twentythirteen a.carousel-control:focus,
+.wpbc-twentytwelve a.carousel-control:focus {
+    outline: none;
+}
+.wpbc-twentythirteen .entry-content .carousel-caption h3,
+.wpbc-twentytwelve .entry-content .carousel-caption h3,
+.wpbc-twentyeleven .entry-content .carousel-caption h3,
+.wpbc-twentyten #content .entry-content .carousel-caption h3 {
+    line-height: 1.1;
+    font-size: 24px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 500;
+    color: #ffffff;
+}
+.wpbc-twentythirteen .carousel > a,
+.wpbc-twentythirteen .carousel-caption h3 a,
+.wpbc-twentytwelve .carousel > a,
+.wpbc-twentytwelve .carousel-caption h3 a,
+.wpbc-twentyeleven .carousel-caption h3 a,
+.wpbc-twentyten #content .carousel > a,
+.wpbc-twentyten #content .carousel-caption h3 a {
+    color: #ffffff;
+    text-decoration: none;
+}
+.wpbc-twentythirteen .entry-content .carousel-caption p,
+.wpbc-twentytwelve .entry-content .carousel-caption p,
+.wpbc-twentyeleven .entry-content .carousel-caption p,
+.wpbc-twentyten #content .entry-content .carousel-caption p {
+    line-height: 1.1;
+}
+.wpbc-twentythirteen .entry-content .carousel-caption p a,
+.wpbc-twentytwelve .entry-content .carousel-caption p a,
+.wpbc-twentyeleven .entry-content .carousel-caption p a,
+.wpbc-twentyten #content .entry-content .carousel-caption p a {
+    color: #ffffff;
+    text-decoration: none;
 }
