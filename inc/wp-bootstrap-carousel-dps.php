@@ -109,14 +109,15 @@ class WP_Bootstrap_Carousel_DPS
         if ( $original_atts['bootstrap'] != 1 || is_feed() )
             return $output;
 
-        global $wp_bootstrap_carousel, $wp_bc_found_posts;
+        global $content_width, $wp_bootstrap_carousel, $wp_bc_found_posts;
 
-        $controls   = ( isset( $original_atts['controls'] ) ? (bool)$original_atts['controls'] : 1 );
-        $slide      = ( isset( $original_atts['slide'] )    ? (bool)$original_atts['slide'] : 1 );
-        $interval   = ( isset( $original_atts['interval'] ) ? intval( $original_atts['interval'] ) : 5000 );
-        $pause      = ( isset( $original_atts['pause'] )    ? sanitize_text_field( $original_atts['pause'] ) : 'hover' );
-        $wrap       = ( isset( $original_atts['wrap'] )     ? (bool)$original_atts['wrap'] : 1 );
-        $thickbox   = ( isset( $original_atts['thickbox'] ) ? (bool)$original_atts['thickbox'] : 1 );
+        $width_int  = ( isset( $original_atts['width'] ) )      ? intval( str_replace( array( '%', 'px' ), '', trim( $original_atts['width'] ) ) ) : ( isset( $content_width ) ? $content_width : '300' );
+        $controls   = ( isset( $original_atts['controls'] )     ? (bool)$original_atts['controls'] : 1 );
+        $slide      = ( isset( $original_atts['slide'] )        ? (bool)$original_atts['slide'] : 1 );
+        $interval   = ( isset( $original_atts['interval'] )     ? intval( $original_atts['interval'] ) : 5000 );
+        $pause      = ( isset( $original_atts['pause'] )        ? sanitize_text_field( $original_atts['pause'] ) : 'hover' );
+        $wrap       = ( isset( $original_atts['wrap'] )         ? (bool)$original_atts['wrap'] : 1 );
+        $thickbox   = ( isset( $original_atts['thickbox'] )     ? (bool)$original_atts['thickbox'] : 1 );
 
         static $it = 1;
         $it++;
@@ -124,7 +125,7 @@ class WP_Bootstrap_Carousel_DPS
         $output = '';
         $output .= $wp_bootstrap_carousel->enqueue( $thickbox );
 
-        $output .= '<div id="wp-bootstrap-carousel-dps-' . $it . '" class="carousel carousel-dps' . ( ( $slide ) ? " slide" : "" ) . '" data-interval="' . $interval . '" data-pause="' . $pause . '" data-wrap="' . $wrap . '">';
+        $output .= '<div style="width:' . $width_int . 'px;" id="wp-bootstrap-carousel-dps-' . $it . '" class="carousel carousel-dps' . ( ( $slide ) ? " slide" : "" ) . '" data-interval="' . $interval . '" data-pause="' . $pause . '" data-wrap="' . $wrap . '">';
 
         /**
          * INDICATORS
