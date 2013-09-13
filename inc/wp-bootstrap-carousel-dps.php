@@ -35,7 +35,7 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; 
- 
+
 if ( ! class_exists( 'WP_Bootstrap_Carousel_DPS' ) ) {
 
 /**
@@ -43,36 +43,32 @@ if ( ! class_exists( 'WP_Bootstrap_Carousel_DPS' ) ) {
  */
 class WP_Bootstrap_Carousel_DPS
 {
-    function WP_Bootstrap_Carousel_DPS()
-    {
-        $this->__construct();
-    }
     function __construct()
     {
-        if ( ! is_admin() || defined( 'DOING_AJAX' ) ) :
-        
-            add_action( 'init', array( &$this, 'init' ) );
-            
-        endif;
+        if ( ! is_admin() || defined( 'DOING_AJAX' ) )
+            add_action( 'init', array( $this, 'init' ) );
     }
     function init()
     {
-        add_filter( 'display_posts_shortcode_args',             array( &$this, 'display_posts_shortcode_args' ),            10, 1 );
-        add_filter( 'display_posts_shortcode_wrapper_open',     array( &$this, 'display_posts_shortcode_wrapper_open' ),    11, 2 );
-        add_filter( 'display_posts_shortcode_output',           array( &$this, 'display_posts_shortcode_output' ),          12, 9 );
-        add_filter( 'display_posts_shortcode_wrapper_close',    array( &$this, 'display_posts_shortcode_wrapper_close' ),   13, 2 );
+        add_filter( 'display_posts_shortcode_args',             array( $this, 'display_posts_shortcode_args' ),             10, 2 );
+        add_filter( 'display_posts_shortcode_wrapper_open',     array( $this, 'display_posts_shortcode_wrapper_open' ),     11, 2 );
+        add_filter( 'display_posts_shortcode_output',           array( $this, 'display_posts_shortcode_output' ),           12, 9 );
+        add_filter( 'display_posts_shortcode_wrapper_close',    array( $this, 'display_posts_shortcode_wrapper_close' ),    13, 2 );
     }
-    function display_posts_shortcode_args( $original_atts )
+    function display_posts_shortcode_args( $args, $original_atts )
     {
-        $bootstrap = array(
-            'bootstrap' => 0,
-            'interval'  => 5000,
-            'pause'     => 'hover',
-            'thickbox'  => 0
-        );
-        $original_atts = array_merge( $bootstrap, $original_atts );
-        
-        return $original_atts;
+        if ( $original_atts['bootstrap'] != 1 || is_feed() )
+            return $args;
+
+        global $wp_bc_found_posts;
+        $wp_bc_found_posts = 0;
+
+        $listing = new WP_Query( $args );
+        if ( $listing->have_posts() )
+            $wp_bc_found_posts = $listing->found_posts;
+        wp_reset_postdata();
+
+        return $args;
     }
     function display_posts_shortcode_output( $output, $original_atts, $image, $title, $date, $excerpt, $inner_wrapper, $content, $class )
     {
@@ -83,19 +79,28 @@ class WP_Bootstrap_Carousel_DPS
 
         if( ! post_type_supports( get_post_type( $post ), 'thumbnail' ) )
             continue;
-        
+
         $image_size     = ( isset( $original_atts['image_size'] ) ? sanitize_text_field( $original_atts['image_size'] ) : 'large' );
-        $thickbox       = ( isset( $original_atts['thickbox'] ) ? (bool)$original_atts['thickbox'] : 0 );
+        $thickbox       = ( isset( $original_atts['thickbox'] ) ? (bool)$original_atts['thickbox'] : 1 );
         $src            = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), $image_size );
         $link           = ( $thickbox ) ? $src[0] : get_permalink();
-        
+
         $inner_wrapper  = 'div';
-        $image          = '<a class="image' . ( ( $thickbox == 1 ) ? " thickbox" : "" ) . '" href="' . $link . '">' . get_the_post_thumbnail( $post->ID, $image_size ) . '</a> ';
-        
-        //$title = '<a class="title' . ( ( $thickbox == 1 ) ? " thickbox" : "" ) . '" href="' . $link . '">' . get_the_title() . '</a>';
+        $image          = '<a class="image' . ( ( $thickbox ) ? " thickbox" : "" ) . '" href="' . $link . '">' . get_the_post_thumbnail( $post->ID, $image_size ) . '</a>';
+        $title          = '<a class="title' . ( ( $thickbox ) ? " thickbox" : "" ) . '" href="' . $link . '">' . get_the_title() . '</a>';
+
         //$comments_link = '<span class="carousel-comments-link">...</span>';
 
-        $output = '<' . $inner_wrapper . ' class="' . implode( ' ', $class ) . ' item active">' . $image . '<div class="carousel-caption"><h4>' . $title . '</h4><p>' . $date . $excerpt . '</p></div></' . $inner_wrapper . '>';
+        $output = '';
+        $output .= '<' . $inner_wrapper . ' class="' . implode( ' ', $class ) . ' item active">';
+        $output .= $image;
+        $output .= '<div class="carousel-caption">';
+        $output .= '<h3 class="carousel-post-title">' . $title . '</h3>';
+        if( $date )
+            $output .= '<p>' . $date . '</p>';
+        $output .= '<p>' . $excerpt . '</p>';
+        $output .= '</div><!-- .carousel-caption -->';
+        $output .= '</' . $inner_wrapper . '><!-- .item -->';
 
         return $output;
     }
@@ -103,40 +108,58 @@ class WP_Bootstrap_Carousel_DPS
     {
         if ( $original_atts['bootstrap'] != 1 || is_feed() )
             return $output;
-            
-        global $wp_bootstrap_carousel;
 
+        global $wp_bootstrap_carousel, $wp_bc_found_posts;
+
+        $controls   = ( isset( $original_atts['controls'] ) ? (bool)$original_atts['controls'] : 1 );
+        $slide      = ( isset( $original_atts['slide'] )    ? (bool)$original_atts['slide'] : 1 );
         $interval   = ( isset( $original_atts['interval'] ) ? intval( $original_atts['interval'] ) : 5000 );
         $pause      = ( isset( $original_atts['pause'] )    ? sanitize_text_field( $original_atts['pause'] ) : 'hover' );
-        $thickbox   = ( isset( $original_atts['thickbox'] ) ? (bool)$original_atts['thickbox'] : 0 );
+        $wrap       = ( isset( $original_atts['wrap'] )     ? (bool)$original_atts['wrap'] : 1 );
+        $thickbox   = ( isset( $original_atts['thickbox'] ) ? (bool)$original_atts['thickbox'] : 1 );
 
-        // generate an ID for the carousel
-        $md5 = substr( md5( rand() ), 0, 7);
-        update_option( 'wp_bc_dps_md5', $md5 );
-        
+        static $it = 1;
+        $it++;
+
         $output = '';
-        $output .= $wp_bootstrap_carousel->enqueue( $interval, $pause, $thickbox );
-        $output .= $wp_bootstrap_carousel->style();
+        $output .= $wp_bootstrap_carousel->enqueue( $thickbox );
 
-        $output .= '<div id="wp-bootstrap-carousel-dps-' . get_option( 'wp_bc_dps_md5' ) . '" class="carousel carousel-dps">
-            <div class="carousel-inner carousel-inner-dps">';
-            
+        $output .= '<div id="wp-bootstrap-carousel-dps-' . $it . '" class="carousel carousel-dps' . ( ( $slide ) ? " slide" : "" ) . '" data-interval="' . $interval . '" data-pause="' . $pause . '" data-wrap="' . $wrap . '">';
+
+        /**
+         * INDICATORS
+         */
+        if( $controls )
+        {
+            $output .= '<ol class="carousel-indicators">';
+            for ( $i = 0; $i < $wp_bc_found_posts; $i++ )
+                $output .= '<li data-target="#wp-bootstrap-carousel-dps-' . $it . '" data-slide-to="' . $i . '" class="' . ( ( $i == 0 ) ? "active" : "" ) . '"></li>';
+            $output .= '</ol>';
+        }
+
+        $output .= '<div class="carousel-inner carousel-inner-dps">';
+
         return $output;
     }
     function display_posts_shortcode_wrapper_close( $output, $original_atts )
     {
         if ( $original_atts['bootstrap'] != 1 || is_feed() )
             return $output;
-            
-        $output = '';
-        $output .= '</div>
-            <a class="carousel-control carousel-control-dps left" data-slide="prev" href="#wp-bootstrap-carousel-dps-' . get_option( 'wp_bc_dps_md5' ) . '">' . __( '&lsaquo;', 'wp_bootstrap_carousel' ) . '</a>
-            <a class="carousel-control carousel-control-dps right" data-slide="next" href="#wp-bootstrap-carousel-dps-' . get_option( 'wp_bc_dps_md5' ) . '">' . __( '&rsaquo;', 'wp_bootstrap_carousel' ) . '</a>
-        </div>';
 
-        // delete option that contains carousel ID
-        delete_option( 'wp_bc_dps_md5' );
+        static $it = 1;
+        $it++;
+
+        $controls = ( isset( $original_atts['controls'] ) ? (bool)$original_atts['controls'] : 1 );
+
+        $output = '';
+        $output .= '</div><!-- .carousel-inner -->';
         
+        if( $controls )
+            $output .= '<a class="carousel-control carousel-control-dps left" data-slide="prev" href="#wp-bootstrap-carousel-dps-' . $it . '"><span class="icon-prev"></span></a>
+            <a class="carousel-control carousel-control-dps right" data-slide="next" href="#wp-bootstrap-carousel-dps-' . $it . '"><span class="icon-next"></span></a>';
+
+        $output .= '</div><!-- .carousel -->';
+
         return $output;
     }
 } // class
