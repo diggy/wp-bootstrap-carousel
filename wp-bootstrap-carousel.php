@@ -61,7 +61,9 @@ class WP_Bootstrap_Carousel
 
         if ( ! is_admin() || defined( 'DOING_AJAX' ) ) :
 
-            add_action( 'init', array( $this, 'init' ), 10 );
+            add_action( 'wp_enqueue_scripts',   array( $this, 'wp_enqueue_scripts' ),   1 );
+            add_action( 'init',                 array( $this, 'init' ),                 10 );
+            add_action( 'body_class',           array( $this, 'body_class' ),           10 );
 
             if( function_exists( 'be_display_posts_shortcode' ) )
                 $this->be_display_posts_plugin();
@@ -115,15 +117,17 @@ class WP_Bootstrap_Carousel
         /**
          * INDICATORS
          */
-        $carousel .= '<ol class="carousel-indicators">';
-
-        $o = 0;
-        foreach ( $items as $item )
+        if( $vars['controls'] )
         {
-            $carousel .= '<li data-target="#wp-bootstrap-carousel-' . $vars['id'] . '" data-slide-to="' . $o . '" class="' . ( ( $o == 0 ) ? "active" : "" ) . '"></li>';
-            $o++;
+            $carousel .= '<ol class="carousel-indicators">';
+            $o = 0;
+            foreach ( $items as $item )
+            {
+                $carousel .= '<li data-target="#wp-bootstrap-carousel-' . $vars['id'] . '" data-slide-to="' . $o . '" class="' . ( ( $o == 0 ) ? "active" : "" ) . '"></li>';
+                $o++;
+            }
+            $carousel .= '</ol>';
         }
-        $carousel .= '</ol>';
 
         /**
          * ITEMS
@@ -143,25 +147,23 @@ class WP_Bootstrap_Carousel
 
             $carousel .= '<div class="carousel-caption">';
 
-            $carousel .= '<h3>' . $item->post_title;
+            $carousel .= '<h3 class="carousel-post-title">' . $item->post_title . '</h3>';
 
             if( $vars['comments'] && comments_open( $item_id ) ) :
 
                 $comments = ( get_comments_number( $item_id ) != 0 ) ? sprintf( _n( '1 Comment', '%1$s Comments', get_comments_number( $item_id ), 'wp_bootstrap_carousel' ), number_format_i18n( get_comments_number( $item_id ) ) ) : __( '0 Comments', 'wp_bootstrap_carousel' );
 
-                $carousel .= '<span class="carousel-comments-link">
+                $carousel .= '<p class="carousel-comments-link">
                     <a href="' . get_comments_link( $item_id ) . '" rel="bookmark">' . $comments . '</a>
-                </span>';
+                </p>';
 
             endif;
 
-            $carousel .= '</h3>';
-
             $carousel .= apply_filters( 'wp_bootstrap_carousel_caption_text', $text, $item_id );
 
-            $carousel .= '</div>';
+            $carousel .= '</div><!-- .carousel-caption -->';
 
-            $carousel .= '</div>';
+            $carousel .= '</div><!-- .item -->';
 
             $i++;
         }
@@ -171,13 +173,10 @@ class WP_Bootstrap_Carousel
         /**
          * CONTROLS
          */
-        if( $vars['controls'] ) :
-
-        $carousel .= '<!-- Carousel nav -->
+        if( $vars['controls'] )
+            $carousel .= '<!-- Carousel nav -->
   <a class="carousel-control left" href="#wp-bootstrap-carousel-' . $vars['id'] . '" data-slide="prev"><span class="icon-prev"></span></a>
   <a class="carousel-control right" href="#wp-bootstrap-carousel-' . $vars['id'] . '" data-slide="next"><span class="icon-next"></span></a>';
-
-        endif;
 
         $carousel .= '</div><!-- .carousel -->';
 
@@ -213,7 +212,7 @@ class WP_Bootstrap_Carousel
             'wrap'              => 1,       // (bool) Whether the carousel should cycle continuously or have hard stops.
             'thickbox'          => 1,
             
-        ) ), $atts);
+        ) ), $atts, 'carousel' );
 
         // query vars
         $post_parent    = intval( $atts['post_parent'] );
@@ -285,8 +284,7 @@ class WP_Bootstrap_Carousel
         // enqueue jQuery
         wp_enqueue_script( 'jquery' );
 
-        // bootstrap styles & scripts
-        wp_enqueue_style( 'wp-bootstrap-carousel',       $this->plugin_dir_url . 'css/carousel' . $min . '.css', array(), '3.0.0', 'screen' );
+        // bootstrap scripts
         wp_enqueue_script( 'wp-bootstrap-carousel',      $this->plugin_dir_url . 'js/carousel' . $min . '.js', array( 'jquery' ), '3.0.0', true );
         wp_enqueue_script( 'wp-bootstrap-carousel-init', $this->plugin_dir_url . 'js/carousel-init.js', array( 'jquery', 'wp-bootstrap-carousel' ), $this->version, true );
 
@@ -300,6 +298,18 @@ class WP_Bootstrap_Carousel
 
         // action hook
         do_action( 'wp_bootstrap_carousel_enqueue' );
+    }
+    public function wp_enqueue_scripts()
+    {
+        $min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
+        wp_enqueue_style( 'wp-bootstrap-carousel',       $this->plugin_dir_url . 'css/carousel' . $min . '.css', array(), $this->version, 'screen' );
+    }
+    public function body_class( $classes )
+    {
+        $classes[] = 'wpbc-' . sanitize_html_class( strtolower( wp_get_theme()->Name ) );
+        
+        return $classes;
     }
     public function be_display_posts_plugin()
     {
