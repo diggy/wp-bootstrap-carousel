@@ -221,7 +221,7 @@ class WP_Bootstrap_Carousel
 
         // query vars
         $post_parent    = intval( $atts['post_parent'] );
-        $post_status    = $atts['post_status'];
+        $post_status    = sanitize_text_field( $atts['post_status'] );
         $post_type      = sanitize_text_field( $atts['post_type'] );
         $post_mime_type = sanitize_text_field( $atts['post_mime_type'] );
         $exclude        = array_map( 'intval', explode( ',', $atts['exclude'] ) );
