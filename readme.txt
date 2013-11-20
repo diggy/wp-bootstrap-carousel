@@ -3,8 +3,8 @@ Contributors: donutz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JMEK9E362ALYJ
 Tags: bootstrap, slideshow, carousel, images, gallery, shortcode
 Requires at least: 3.4
-Tested up to: 3.6.1
-Stable tag: 0.2.0
+Tested up to: 3.7.1
+Stable tag: 0.2.1
 License: GPLv3
 
 A simple, straightforward implementation of the Twitter Bootstrap Carousel in WordPress.
