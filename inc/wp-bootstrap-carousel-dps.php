@@ -84,7 +84,7 @@ class WP_Bootstrap_Carousel_DPS
             continue;
 
         $image_size     = ( isset( $original_atts['image_size'] ) ? sanitize_text_field( $original_atts['image_size'] ) : 'large' );
-        $thickbox       = ( isset( $original_atts['thickbox'] ) ? (bool)$original_atts['thickbox'] : 1 );
+        $thickbox       = ( isset( $original_atts['thickbox'] ) ? wp_bc_bool( $original_atts['thickbox'] ) : 1 );
         $src            = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), $image_size );
         $link           = ( $thickbox ) ? $src[0] : get_permalink();
 
@@ -117,12 +117,12 @@ class WP_Bootstrap_Carousel_DPS
         global $content_width, $wp_bootstrap_carousel, $wp_bc_found_posts;
 
         $width_int  = ( isset( $original_atts['width'] ) )      ? intval( str_replace( array( '%', 'px' ), '', trim( $original_atts['width'] ) ) ) : ( isset( $content_width ) ? $content_width : '300' );
-        $controls   = ( isset( $original_atts['controls'] )     ? (bool)$original_atts['controls'] : 1 );
-        $slide      = ( isset( $original_atts['slide'] )        ? (bool)$original_atts['slide'] : 1 );
+        $controls   = ( isset( $original_atts['controls'] )     ? wp_bc_bool( $original_atts['controls'] ) : 1 );
+        $slide      = ( isset( $original_atts['slide'] )        ? wp_bc_bool( $original_atts['slide'] ) : 1 );
         $interval   = ( isset( $original_atts['interval'] )     ? intval( $original_atts['interval'] ) : 5000 );
         $pause      = ( isset( $original_atts['pause'] )        ? sanitize_text_field( $original_atts['pause'] ) : 'hover' );
-        $wrap       = ( isset( $original_atts['wrap'] )         ? (bool)$original_atts['wrap'] : 1 );
-        $thickbox   = ( isset( $original_atts['thickbox'] )     ? (bool)$original_atts['thickbox'] : 1 );
+        $wrap       = ( isset( $original_atts['wrap'] )         ? wp_bc_bool( $original_atts['wrap'] ) : 1 );
+        $thickbox   = ( isset( $original_atts['thickbox'] )     ? wp_bc_bool( $original_atts['thickbox'] ) : 1 );
 
         static $it = 1;
         $it++;
@@ -157,7 +157,7 @@ class WP_Bootstrap_Carousel_DPS
         static $it = 1;
         $it++;
 
-        $controls = ( isset( $original_atts['controls'] ) ? (bool)$original_atts['controls'] : 1 );
+        $controls = ( isset( $original_atts['controls'] ) ? wp_bc_bool( $original_atts['controls'] ) : 1 );
 
         $output = '';
         $output .= '</div><!-- .carousel-inner -->';
