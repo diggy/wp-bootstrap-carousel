@@ -345,3 +345,15 @@ class WP_Bootstrap_Carousel
 $GLOBALS['wp_bootstrap_carousel'] = new WP_Bootstrap_Carousel();
 
 } // class_exists check
+
+/**
+ * Convert string to boolean
+ *
+ * @since  WP Bootstrap Carousel 0.2.1
+ * @param  string $value true/on/yes/1, or false/off/no/0
+ * @return bool          true or false
+ */
+function wp_bc_bool( $value )
+{
+    return filter_var( $value, FILTER_VALIDATE_BOOLEAN );
+}
