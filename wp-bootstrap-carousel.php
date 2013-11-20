@@ -326,8 +326,8 @@ class WP_Bootstrap_Carousel
 
         if ( $plugin === $file )
         {
-            $links[] = sprintf( __( '<a href="%1$s">Wiki</a>', 'wp_bootstrap_carousel' ), esc_url( 'https://github.com/diggy/wp-bootstrap-carousel/wiki' ) );
-            $links[] = sprintf( __( '<a href="%1$s">Donate</a>', 'wp_bootstrap_carousel' ), esc_url( 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JMEK9E362ALYJ' ) );
+            $links[] = sprintf( '<a href="%1$s" target="_blank">' . __( 'Wiki', 'wp_bootstrap_carousel' ) . '</a>', esc_url( 'https://github.com/diggy/wp-bootstrap-carousel/wiki' ) );
+            $links[] = sprintf( '<a href="%1$s" target="_blank">' . __( 'Donate', 'wp_bootstrap_carousel' ) . '</a>', esc_url( 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JMEK9E362ALYJ' ) );
         }
 
         return $links;
