@@ -76,6 +76,9 @@ Checkout and contribute to the plugin source code on [GitHub](https://github.com
 
 == Upgrade Notice ==
 
+= 0.2.1 =
+minor update
+
 = 0.2.0 =
 Includes Bootstrap Carousel 3.0.0, localization support, improved performance of Display Posts Shortcode addon
 
