@@ -34,28 +34,28 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; 
+if( ! defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'WP_Bootstrap_Carousel_DPS' ) ) {
+if( ! class_exists( 'WP_Bootstrap_Carousel_DPS' ) ) {
 
 /**
  * WP_Bootstrap_Carousel_DPS class
  */
 class WP_Bootstrap_Carousel_DPS
 {
-    function __construct()
+    public function __construct()
     {
-        if ( ! is_admin() || defined( 'DOING_AJAX' ) )
+        if( ! is_admin() || defined( 'DOING_AJAX' ) )
             add_action( 'init', array( $this, 'init' ) );
     }
-    function init()
+    public function init()
     {
         add_filter( 'display_posts_shortcode_args',             array( $this, 'display_posts_shortcode_args' ),             10, 2 );
         add_filter( 'display_posts_shortcode_wrapper_open',     array( $this, 'display_posts_shortcode_wrapper_open' ),     11, 2 );
         add_filter( 'display_posts_shortcode_output',           array( $this, 'display_posts_shortcode_output' ),           12, 9 );
         add_filter( 'display_posts_shortcode_wrapper_close',    array( $this, 'display_posts_shortcode_wrapper_close' ),    13, 2 );
     }
-    function display_posts_shortcode_args( $args, $original_atts )
+    public function display_posts_shortcode_args( $args, $original_atts )
     {
         if ( $original_atts['bootstrap'] != 1 || is_feed() )
             return $args;
@@ -70,7 +70,7 @@ class WP_Bootstrap_Carousel_DPS
 
         return $args;
     }
-    function display_posts_shortcode_output( $output, $original_atts, $image, $title, $date, $excerpt, $inner_wrapper, $content, $class )
+    public function display_posts_shortcode_output( $output, $original_atts, $image, $title, $date, $excerpt, $inner_wrapper, $content, $class )
     {
         if ( $original_atts['bootstrap'] != 1 || is_feed() )
             return $output;
@@ -89,8 +89,6 @@ class WP_Bootstrap_Carousel_DPS
         $image          = '<a class="image' . ( ( $thickbox ) ? " thickbox" : "" ) . '" href="' . $link . '">' . get_the_post_thumbnail( $post->ID, $image_size ) . '</a>';
         $title          = '<a class="title' . ( ( $thickbox ) ? " thickbox" : "" ) . '" href="' . $link . '">' . get_the_title() . '</a>';
 
-        //$comments_link = '<span class="carousel-comments-link">...</span>';
-
         $output = '';
         $output .= '<' . $inner_wrapper . ' class="' . implode( ' ', $class ) . ' item active">';
         $output .= $image;
@@ -104,7 +102,7 @@ class WP_Bootstrap_Carousel_DPS
 
         return $output;
     }
-    function display_posts_shortcode_wrapper_open( $output, $original_atts )
+    public function display_posts_shortcode_wrapper_open( $output, $original_atts )
     {
         if ( $original_atts['bootstrap'] != 1 || is_feed() )
             return $output;
@@ -133,8 +131,10 @@ class WP_Bootstrap_Carousel_DPS
         if( $controls )
         {
             $output .= '<ol class="carousel-indicators">';
+
             for ( $i = 0; $i < $wp_bc_found_posts; $i++ )
                 $output .= '<li data-target="#wp-bootstrap-carousel-dps-' . $it . '" data-slide-to="' . $i . '" class="' . ( ( $i == 0 ) ? "active" : "" ) . '"></li>';
+
             $output .= '</ol>';
         }
 
@@ -142,7 +142,7 @@ class WP_Bootstrap_Carousel_DPS
 
         return $output;
     }
-    function display_posts_shortcode_wrapper_close( $output, $original_atts )
+    public function display_posts_shortcode_wrapper_close( $output, $original_atts )
     {
         if ( $original_atts['bootstrap'] != 1 || is_feed() )
             return $output;
@@ -154,7 +154,7 @@ class WP_Bootstrap_Carousel_DPS
 
         $output = '';
         $output .= '</div><!-- .carousel-inner -->';
-        
+
         if( $controls )
             $output .= '<a class="carousel-control carousel-control-dps left" data-slide="prev" href="#wp-bootstrap-carousel-dps-' . $it . '"><span class="icon-prev"></span></a>
             <a class="carousel-control carousel-control-dps right" data-slide="next" href="#wp-bootstrap-carousel-dps-' . $it . '"><span class="icon-next"></span></a>';
