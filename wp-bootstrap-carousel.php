@@ -235,16 +235,16 @@ class WP_Bootstrap_Carousel
         $width          = intval( $atts['width'] );
         $image_size     = sanitize_text_field( $atts['image_size'] );
         $rel            = sanitize_text_field( $atts['rel'] );
-        $file           = (bool)$atts['file'];
-        $comments       = (bool)$atts['comments'];
-        $slide          = (bool)$atts['slide'];
-        $controls       = (bool)$atts['controls'];
+        $file           = wp_bc_bool( $atts['file'] );
+        $comments       = wp_bc_bool( $atts['comments'] );
+        $slide          = wp_bc_bool( $atts['slide'] );
+        $controls       = wp_bc_bool( $atts['controls'] );
 
         // js vars
         $interval       = intval( $atts['interval'] );
         $pause          = sanitize_text_field( $atts['pause'] );
-        $wrap           = (bool)$atts['wrap'];
-        $thickbox       = (bool)$atts['thickbox'];
+        $wrap           = wp_bc_bool( $atts['wrap'] );
+        $thickbox       = wp_bc_bool( $atts['thickbox'] );
 
         // query vars array
         $args = array(
