@@ -59,6 +59,13 @@ Checkout and contribute to the plugin source code on [GitHub](https://github.com
 
 == Changelog ==
 
+= 0.2.1 - 20/11/2013 = 
+* check boolean shortcode args properly
+* introduce wp_bootstrap_carousel_dps_caption filter
+* introduce wp_bootstrap_carousel_dps_the_excerpt filter
+* introduce wp_bootstrap_carousel_dps_the_content filter
+* fix some php notices
+
 = 0.2.0 - 13/09/2013 = 
 * localization support
 * update JS and CSS to Bootstrap 3.0.0
