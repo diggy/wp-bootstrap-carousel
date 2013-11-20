@@ -170,6 +170,13 @@ class WP_Bootstrap_Carousel_DPS
 
         return $output;
     }
+    private function is_bootstrap( $original_atts )
+    {
+        if( isset( $original_atts['bootstrap'] ) && false !== wp_bc_bool( $original_atts['bootstrap'] ) )
+            return true;
+
+        return false;
+    }
 } // class
 
 } // class_exists check
