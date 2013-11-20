@@ -60,7 +60,7 @@ class WP_Bootstrap_Carousel_DPS
     }
     public function display_posts_shortcode_args( $args, $original_atts )
     {
-        if ( $original_atts['bootstrap'] != 1 || is_feed() )
+        if( ! $this->is_bootstrap( $original_atts ) )
             return $args;
 
         global $wp_bc_found_posts;
@@ -75,7 +75,7 @@ class WP_Bootstrap_Carousel_DPS
     }
     public function display_posts_shortcode_output( $output, $original_atts, $image, $title, $date, $excerpt, $inner_wrapper, $content, $class )
     {
-        if ( $original_atts['bootstrap'] != 1 || is_feed() )
+        if( ! $this->is_bootstrap( $original_atts ) )
             return $output;
 
         global $post;
@@ -111,7 +111,7 @@ class WP_Bootstrap_Carousel_DPS
     }
     public function display_posts_shortcode_wrapper_open( $output, $original_atts )
     {
-        if ( $original_atts['bootstrap'] != 1 || is_feed() )
+        if( ! $this->is_bootstrap( $original_atts ) )
             return $output;
 
         global $content_width, $wp_bootstrap_carousel, $wp_bc_found_posts;
@@ -151,7 +151,7 @@ class WP_Bootstrap_Carousel_DPS
     }
     public function display_posts_shortcode_wrapper_close( $output, $original_atts )
     {
-        if ( $original_atts['bootstrap'] != 1 || is_feed() )
+        if( ! $this->is_bootstrap( $original_atts ) )
             return $output;
 
         static $it = 1;
