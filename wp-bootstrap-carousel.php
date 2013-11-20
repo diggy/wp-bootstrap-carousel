@@ -52,7 +52,7 @@ class WP_Bootstrap_Carousel
     /**
      * Constructor
      */
-    function __construct()
+    public function __construct()
     {
         $this->plugin_dir       = trailingslashit( dirname( plugin_basename( __FILE__ ) ) );
         $this->plugin_dir_url   = trailingslashit( plugins_url( dirname( plugin_basename( __FILE__ ) ) ) );
@@ -75,14 +75,14 @@ class WP_Bootstrap_Carousel
             add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 2 );
 
         endif;
-        
+
         do_action( 'wp_bootstrap_carousel_loaded' );
     }
-    function i18n()
+    public function i18n()
     {
         load_plugin_textdomain( 'wp_bootstrap_carousel', false, $this->plugin_dir . 'lang/' );
     }
-    function init()
+    public function init()
     {
         global $content_width;
 
@@ -93,7 +93,7 @@ class WP_Bootstrap_Carousel
 
         do_action( 'wp_bootstrap_carousel_init' );
     }
-    function shortcode( $atts )
+    public function shortcode( $atts )
     {
         $data       = (array) $this->get_data( $atts );
         $items      = (array) $data['query'];
@@ -102,7 +102,7 @@ class WP_Bootstrap_Carousel
         $width_int  = str_replace( array( '%', 'px' ), '', $vars['width'] );
 
         global $post;
-        
+
         if( ! ( $parent || $items ) )
             return apply_filters( 'wp_bootstrap_carousel_no_results', false );
 
@@ -313,7 +313,7 @@ class WP_Bootstrap_Carousel
     public function body_class( $classes )
     {
         $classes[] = 'wpbc-' . sanitize_html_class( strtolower( wp_get_theme()->Name ) );
-        
+
         return $classes;
     }
     public function be_display_posts_plugin()
