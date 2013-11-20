@@ -95,12 +95,16 @@ class WP_Bootstrap_Carousel_DPS
         $output = '';
         $output .= '<' . $inner_wrapper . ' class="' . implode( ' ', $class ) . ' item active">';
         $output .= $image;
-        $output .= '<div class="carousel-caption">';
-        $output .= '<h3 class="carousel-post-title">' . $title . '</h3>';
-        if( $date )
-            $output .= '<p>' . $date . '</p>';
-        $output .= '<p>' . $excerpt . '</p>';
-        $output .= '</div><!-- .carousel-caption -->';
+
+        $showexcerpt = $excerpt ? '<p>' . apply_filters( 'wp_bootstrap_carousel_dps_the_excerpt', $excerpt ) . '</p>' : '';
+        $showcontent = $content ? apply_filters( 'wp_bootstrap_carousel_dps_the_content', $content ) : '';
+
+        $output .= apply_filters(
+            'wp_bootstrap_carousel_dps_caption',
+            '<div class="carousel-caption"><h3 class="carousel-post-title">' . $title . '</h3>' . $showexcerpt . $showcontent . '</div><!-- .carousel-caption -->',
+            $original_atts, $title, $date, $excerpt, $content, $post
+        );
+
         $output .= '</' . $inner_wrapper . '><!-- .item -->';
 
         return $output;
