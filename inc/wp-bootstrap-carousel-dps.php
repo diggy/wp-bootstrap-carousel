@@ -50,6 +50,9 @@ class WP_Bootstrap_Carousel_DPS
     }
     public function init()
     {
+        if( is_feed() )
+            return;
+
         add_filter( 'display_posts_shortcode_args',             array( $this, 'display_posts_shortcode_args' ),             10, 2 );
         add_filter( 'display_posts_shortcode_wrapper_open',     array( $this, 'display_posts_shortcode_wrapper_open' ),     11, 2 );
         add_filter( 'display_posts_shortcode_output',           array( $this, 'display_posts_shortcode_output' ),           12, 9 );
