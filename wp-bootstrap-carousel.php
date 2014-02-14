@@ -147,8 +147,17 @@ class WP_Bootstrap_Carousel
             $link   = ( $vars['file'] ) ? $full[0] : get_attachment_link( $item_id );
             $text   = wpautop( wptexturize( $item->post_content ) );
 
-            $carousel .= '<div id="item-' . $item_id . '" class="' . ( ( $i == 0 ) ? "active" : "" ) . ' item">
-                <a class="' . ( ( $vars['file'] && $vars['thickbox'] ) ? "thickbox " : "" ) . '" rel="' . $vars['rel'] . '" href="' . $link . '"><img src="' . $thumb[0] . '" width="' . $vars['width'] . '" alt="' . $item->post_title . '"/></a>';
+            $carousel .= '<div id="item-' . $item_id . '" class="' . ( ( $i == 0 ) ? "active" : "" ) . ' item">';
+
+            if ( $vars['linkimg'] ) {
+                $carousel .= '<a class="' . ( ( $vars['file'] && $vars['thickbox'] ) ? "thickbox " : "" ) . '" rel="' . $vars['rel'] . '" href="' . $link . '">';
+            }
+
+            $carousel .= '<img src="' . $thumb[0] . '" width="' . $vars['width'] . '" alt="' . $item->post_title . '"/>';
+
+            if ( $vars['linkimg'] ) {
+                $carousel .= '</a>';
+            }
 
             $carousel .= '<div class="carousel-caption">';
 
@@ -211,6 +220,7 @@ class WP_Bootstrap_Carousel
             'comments'          => 1,
             'slide'             => 1,
             'controls'          => 1,
+            'linkimg'           => 1,
 
             'interval'          => 5000,    // (int) The amount of time to delay between automatically cycling an item. If false, carousel will not automatically cycle.
             'pause'             => 'hover', // (string) Pauses the cycling of the carousel on mouseenter and resumes the cycling of the carousel on mouseleave.
@@ -239,6 +249,7 @@ class WP_Bootstrap_Carousel
         $comments       = wp_bc_bool( $atts['comments'] );
         $slide          = wp_bc_bool( $atts['slide'] );
         $controls       = wp_bc_bool( $atts['controls'] );
+        $linkimg       = wp_bc_bool( $atts['linkimg'] );
 
         // js vars
         $interval       = intval( $atts['interval'] );
@@ -267,6 +278,7 @@ class WP_Bootstrap_Carousel
             'comments'          => $comments,
             'slide'             => $slide,
             'controls'          => $controls,
+            'linkimg'           => $linkimg,
 
             'interval'          => $interval,
             'pause'             => $pause,
