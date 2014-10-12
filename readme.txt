@@ -59,6 +59,14 @@ Checkout and contribute to the plugin source code on [GitHub](https://github.com
 
 == Changelog ==
 
+= 0.3.0 - 12/10/2014 = 
+* update JS and CSS to Bootstrap 3.2.0
+* make carousel responsive
+* allow img attachment queries with DPS addon
+* allow unwrapping of images with unwrap shortcode attribute
+* thickbox default set to false for DPS carousels
+* use add_thickbox
+
 = 0.2.1 - 20/11/2013 = 
 * check boolean shortcode args properly
 * introduce wp_bootstrap_carousel_dps_caption filter
