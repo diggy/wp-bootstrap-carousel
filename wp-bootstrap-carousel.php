@@ -180,8 +180,8 @@ class WP_Bootstrap_Carousel
          */
         if( $vars['controls'] )
             $carousel .= '<!-- Carousel nav -->
-  <a class="carousel-control left" href="#wp-bootstrap-carousel-' . $vars['id'] . '" data-slide="prev"><span class="icon-prev"></span></a>
-  <a class="carousel-control right" href="#wp-bootstrap-carousel-' . $vars['id'] . '" data-slide="next"><span class="icon-next"></span></a>';
+  <a class="carousel-control left" href="#wp-bootstrap-carousel-' . $vars['id'] . '" role="button" data-slide="prev"><span class="icon-prev"></span></a>
+  <a class="carousel-control right" href="#wp-bootstrap-carousel-' . $vars['id'] . '" role="button" data-slide="next"><span class="icon-next"></span></a>';
 
         $carousel .= '</div><!-- .carousel -->';
 
