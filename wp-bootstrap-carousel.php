@@ -293,12 +293,8 @@ class WP_Bootstrap_Carousel
         wp_enqueue_script( 'wp-bootstrap-carousel-init', $this->plugin_dir_url . 'js/carousel-init.js', array( 'jquery', 'wp-bootstrap-carousel' ), $this->version, true );
 
         // thickbox styles & script
-        if( $thickbox ) :
-
-            wp_enqueue_style( 'thickbox' );
-            wp_enqueue_script( 'thickbox' );
-
-        endif;
+        if( $thickbox )
+            add_thickbox();
 
         // action hook
         do_action( 'wp_bootstrap_carousel_enqueue' );
