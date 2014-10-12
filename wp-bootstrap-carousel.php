@@ -289,8 +289,8 @@ class WP_Bootstrap_Carousel
         $min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
         // bootstrap scripts
-        wp_enqueue_script( 'wp-bootstrap-carousel',      $this->plugin_dir_url . 'js/carousel' . $min . '.js', array( 'jquery' ), '3.0.0', true );
-        wp_enqueue_script( 'wp-bootstrap-carousel-init', $this->plugin_dir_url . 'js/carousel-init.js', array( 'jquery', 'wp-bootstrap-carousel' ), $this->version, true );
+        wp_enqueue_script( 'wp-bootstrap-carousel',      $this->plugin_dir_url . 'js/carousel' . $min . '.js', array( 'jquery' ), '3.2.0', true );
+        wp_enqueue_script( 'wp-bootstrap-carousel-init', $this->plugin_dir_url . 'js/carousel-init' . $min . '.js', array( 'jquery', 'wp-bootstrap-carousel' ), $this->version, true );
 
         // thickbox styles & script
         if( $thickbox )
