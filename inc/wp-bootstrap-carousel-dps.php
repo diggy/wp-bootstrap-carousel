@@ -83,8 +83,13 @@ class WP_Bootstrap_Carousel_DPS
 
         global $post;
 
-        if( ! post_type_supports( get_post_type( $post ), 'thumbnail' ) )
-            continue;
+        $post_type = $post->post_type;
+
+        if( ! ( post_type_supports( $post_type, 'thumbnail' ) || 'attachment' == $post_type ) )
+            return;
+
+        $thickbox       = ( isset( $original_atts['thickbox'] ) ? wp_bc_bool( $original_atts['thickbox'] ) : 0 );
+        $unwrap         = ( isset( $original_atts['unwrap'] ) ? wp_bc_bool( $original_atts['unwrap'] ) : 0 );
 
         $image_size     = ( isset( $original_atts['image_size'] ) ? sanitize_text_field( $original_atts['image_size'] ) : 'large' );
         $thickbox       = ( isset( $original_atts['thickbox'] ) ? wp_bc_bool( $original_atts['thickbox'] ) : 1 );
