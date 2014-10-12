@@ -3,7 +3,7 @@ Contributors: donutz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JMEK9E362ALYJ
 Tags: bootstrap, slideshow, carousel, images, gallery, shortcode
 Requires at least: 3.4
-Tested up to: 3.7.1
+Tested up to: 4.0
 Stable tag: 0.2.1
 License: GPLv3
 
