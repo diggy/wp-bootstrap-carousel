@@ -171,8 +171,8 @@ class WP_Bootstrap_Carousel_DPS
         $output .= '</div><!-- .carousel-inner -->';
 
         if( $controls )
-            $output .= '<a class="carousel-control carousel-control-dps left" data-slide="prev" href="#wp-bootstrap-carousel-dps-' . $it . '"><span class="icon-prev"></span></a>
-            <a class="carousel-control carousel-control-dps right" data-slide="next" href="#wp-bootstrap-carousel-dps-' . $it . '"><span class="icon-next"></span></a>';
+            $output .= '<a class="carousel-control carousel-control-dps left" role="button" data-slide="prev" href="#wp-bootstrap-carousel-dps-' . $it . '"><span class="icon-prev"></span></a>
+            <a class="carousel-control carousel-control-dps right" role="button" data-slide="next" href="#wp-bootstrap-carousel-dps-' . $it . '"><span class="icon-next"></span></a>';
 
         $output .= '</div><!-- .carousel -->';
 
