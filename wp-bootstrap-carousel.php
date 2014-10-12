@@ -106,6 +106,8 @@ class WP_Bootstrap_Carousel
         if( ! ( $parent || $items ) )
             return apply_filters( 'wp_bootstrap_carousel_no_results', false );
 
+        global $post;
+
         if( is_feed() )
             return apply_filters( 
                 'wp_bootstrap_carousel_feed',
