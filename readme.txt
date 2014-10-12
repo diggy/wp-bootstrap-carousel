@@ -83,6 +83,9 @@ Checkout and contribute to the plugin source code on [GitHub](https://github.com
 
 == Upgrade Notice ==
 
+= 0.3.0 =
+Includes Bootstrap Carousel 3.2.0, makes carousel responsive, allows attachment queries with DPS addon, introduces unwrap argument
+
 = 0.2.1 =
 minor update
 
