@@ -99,9 +99,9 @@ class WP_Bootstrap_Carousel
         $items      = (array) $data['query'];
         $vars       = (array) $data['vars'];
         $parent     = isset( $vars['id'] ) && (int) $vars['id'] ? (int) $vars['id'] : '';
-        $width_int  = str_replace( array( '%', 'px' ), '', $vars['width'] );
-
-        global $post;
+        $max_width  = ( isset( $vars['width'] ) && $vars['width'] > 0 ) ? intval( str_replace( array( '%', 'px' ), '', trim( $vars['width'] ) ) ) : '';
+        $max_width  = ( ! empty( $max_width ) ) ? "max-width:{$max_width}px;" : '';
+        $unwrap     = ( isset( $vars['unwrap'] ) && $vars['unwrap'] ) ? ' data-wpbc_unwrap="1"' : '';
 
         if( ! ( $parent || $items ) )
             return apply_filters( 'wp_bootstrap_carousel_no_results', false );
@@ -119,7 +119,7 @@ class WP_Bootstrap_Carousel
 
         $carousel = '';
 
-        $carousel .= '<div id="wp-bootstrap-carousel-' . $vars['id'] . '" class="carousel' . ( ( $vars['slide'] ) ? " slide" : "" ) . '" style="width:' . $width_int . 'px;" data-interval="' . $vars['interval'] . '" data-pause="' . $vars['pause'] . '" data-wrap="' . $vars['wrap'] . '">';
+        $carousel .= '<div id="wp-bootstrap-carousel-' . $vars['id'] . '" class="carousel' . ( ( $vars['slide'] ) ? " slide" : "" ) . '" style="width:100%;' . $max_width . '" data-interval="' . $vars['interval'] . '" data-pause="' . $vars['pause'] . '" data-wrap="' . $vars['wrap'] . '">';
 
         /**
          * INDICATORS
@@ -150,7 +150,7 @@ class WP_Bootstrap_Carousel
             $text   = wpautop( wptexturize( $item->post_content ) );
 
             $carousel .= '<div id="item-' . $item_id . '" class="' . ( ( $i == 0 ) ? "active" : "" ) . ' item">
-                <a class="' . ( ( $vars['file'] && $vars['thickbox'] ) ? "thickbox " : "" ) . '" rel="' . $vars['rel'] . '" href="' . $link . '"><img src="' . $thumb[0] . '" width="' . $vars['width'] . '" alt="' . $item->post_title . '"/></a>';
+                <a class="' . ( ( $vars['file'] && $vars['thickbox'] ) ? "thickbox " : "" ) . '" rel="' . $vars['rel'] . '" href="' . $link . '"><img src="' . $thumb[0] . '" style="width:100%;' . $max_width . '" alt="' . $item->post_title . '"' . $unwrap . '/></a>';
 
             $carousel .= '<div class="carousel-caption">';
 
@@ -206,7 +206,7 @@ class WP_Bootstrap_Carousel
             'order'             => 'ASC',
             'orderby'           => 'ID',
 
-            'width'             => ( isset( $content_width ) ) ? $content_width : '300',
+            'width'             => ( isset( $content_width ) ) ? $content_width : '',
             'image_size'        => 'large',
             'rel'               => '',
             'file'              => 1,
@@ -217,8 +217,9 @@ class WP_Bootstrap_Carousel
             'interval'          => 5000,    // (int) The amount of time to delay between automatically cycling an item. If false, carousel will not automatically cycle.
             'pause'             => 'hover', // (string) Pauses the cycling of the carousel on mouseenter and resumes the cycling of the carousel on mouseleave.
             'wrap'              => 1,       // (bool) Whether the carousel should cycle continuously or have hard stops.
-            'thickbox'          => 1,
-            
+            'thickbox'          => 1,       // (bool) Whether thickbox should be used.
+            'unwrap'            => 0,       // (bool) Whether images should be hyperlinked.
+
         ) ), $atts, 'carousel' );
 
         // query vars
@@ -247,6 +248,7 @@ class WP_Bootstrap_Carousel
         $pause          = sanitize_text_field( $atts['pause'] );
         $wrap           = wp_bc_bool( $atts['wrap'] );
         $thickbox       = wp_bc_bool( $atts['thickbox'] );
+        $unwrap         = wp_bc_bool( $atts['unwrap'] );
 
         // query vars array
         $args = array(
@@ -274,6 +276,7 @@ class WP_Bootstrap_Carousel
             'pause'             => $pause,
             'wrap'              => $wrap,
             'thickbox'          => $thickbox,
+            'unwrap'            => $unwrap
         );
 
         // data array
