@@ -66,6 +66,9 @@ class WP_Bootstrap_Carousel_DPS
         global $wp_bc_found_posts;
         $wp_bc_found_posts = 0;
 
+        if( isset( $original_atts['post_type'] ) && 'attachment' == $original_atts['post_type'] )
+            $args['post_status'] = 'inherit';
+
         $listing = new WP_Query( $args );
         if ( $listing->have_posts() )
             $wp_bc_found_posts = $listing->found_posts;
