@@ -59,7 +59,7 @@ Checkout and contribute to the plugin source code on [GitHub](https://github.com
 
 == Changelog ==
 
-= 0.3.0 - 06/11/2014 =
+= 0.4.0 - 06/11/2014 =
 
 * abandons usage of $content_width global
 * optimizes script loading
