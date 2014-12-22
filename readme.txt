@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: bootstrap, slideshow, carousel, images, gallery, shortcode
 Requires at least: 3.6
 Tested up to: 4.1
-Stable tag: 0.4.0
+Stable tag: 0.5.0
 License: GPLv3
 
 A simple, straightforward implementation of the Twitter Bootstrap Carousel in WordPress.
@@ -53,11 +53,23 @@ Idem for feature requests.
 
 Checkout and contribute to the plugin source code on [GitHub](https://github.com/diggy/wp-bootstrap-carousel).
 
+= Can I add translations? =
+
+Please submit a pull request on [GitHub](https://github.com/diggy/wp-bootstrap-carousel).
+
 == Screenshots ==
 
 1. carousel
 
 == Changelog ==
+
+= 0.5.0 - 22/12/2014 =
+
+* update JS and CSS to Bootstrap 3.3.1
+* improves accessibility
+* adds keyboard navigation support
+* adds basic styling for Twenty Fifteen
+* miscellaneous code tweaks
 
 = 0.4.0 - 06/11/2014 =
 
@@ -103,6 +115,9 @@ Checkout and contribute to the plugin source code on [GitHub](https://github.com
 * Initial release 0.1.1
 
 == Upgrade Notice ==
+
+= 0.5.0 =
+Includes Bootstrap Carousel 3.3.1, improves accessibility, adds keyboard navigation support and basic styling for Twenty Fifteen.
 
 = 0.4.0 =
 Visit the plugin homepage on wordpress.org to see what's new!
