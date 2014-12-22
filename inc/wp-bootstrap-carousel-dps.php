@@ -15,7 +15,7 @@
  * https://github.com/billerickson/display-posts-shortcode/wiki
  *
  * @class       WP_Bootstrap_Carousel_DPS
- * @version     0.4.0
+ * @version     0.5.0
  * @package     WP_Bootstrap_Carousel/Classes
  * @category    Class
  * @author      Peter J. Herrel <peterherrel@gmail.com>
@@ -54,16 +54,40 @@ if( ! class_exists( 'WP_Bootstrap_Carousel_DPS' ) ) {
  * WP Bootstrap Carousel DPS class
  *
  * @class   WP_Bootstrap_Carousel_DPS
- * @version 0.4.0
+ * @version 0.5.0
  */
 class WP_Bootstrap_Carousel_DPS
 {
+    /**
+     * @var WP_Bootstrap_Carousel_DPS The single instance of the class
+     * @since 0.5.0
+     */
+    protected static $_instance = null;
+
     /**
      * @var     integer
      * @since   0.4.0
      */
     protected static $found_posts = 0;
 
+    /**
+     * Main WP_Bootstrap_Carousel_DPS instance
+     *
+     * Ensures only one instance of WP Bootstrap Carousel DPS is loaded or can be loaded.
+     *
+     * @since 0.5.0
+     * @static
+     * @return WP_Bootstrap_Carousel_DPS, main instance
+     */
+    public static function instance()
+    {
+        if( is_null( self::$_instance ) )
+        {
+            self::$_instance = new self();
+        }
+
+        return self::$_instance;
+    }
     /**
      * Constructor
      *
@@ -304,6 +328,7 @@ class WP_Bootstrap_Carousel_DPS
         $interval   = isset( $original_atts['interval'] )   ? intval( $original_atts['interval'] ) : 5000;
         $pause      = isset( $original_atts['pause'] )      ? sanitize_text_field( $original_atts['pause'] ) : 'hover';
         $wrap       = isset( $original_atts['wrap'] )       ? wp_bc_bool( $original_atts['wrap'] ) : 1;
+        $keyboard   = isset( $original_atts['keyboard'] )   ? wp_bc_bool( $original_atts['keyboard'] ) : 1;
         $thickbox   = isset( $original_atts['thickbox'] )   ? wp_bc_bool( $original_atts['thickbox'] ) : 0;
         $title      = isset( $original_atts['title'] )      ? sanitize_text_field( $original_atts['title'] ) : 0;
 
@@ -329,7 +354,7 @@ class WP_Bootstrap_Carousel_DPS
         }
 
         // open carousel outer div
-        $output .= '<div style="width:100%;' . $max_width . '" id="wp-bootstrap-carousel-dps-' . $it . '" class="carousel carousel-dps' . ( ( $slide ) ? " slide" : "" ) . '" data-interval="' . $interval . '" data-pause="' . $pause . '" data-wrap="' . $wrap . '">';
+        $output .= '<div style="width:100%;' . $max_width . '" id="wp-bootstrap-carousel-dps-' . $it . '" class="carousel carousel-dps' . ( ( $slide ) ? " slide" : "" ) . '" data-interval="' . $interval . '" data-pause="' . $pause . '" data-wrap="' . $wrap . '" data-keyboard="' . $keyboard . '">';
 
         // carousel indicators
         if( $controls )
@@ -344,7 +369,7 @@ class WP_Bootstrap_Carousel_DPS
         }
 
         // open carousel inner div
-        $output .= '<div class="carousel-inner carousel-inner-dps">';
+        $output .= '<div class="carousel-inner carousel-inner-dps" role="listbox">';
 
         // return output
         return $output;
@@ -387,8 +412,15 @@ class WP_Bootstrap_Carousel_DPS
 
         // carousel controls
         if( $controls ) {
-            $output .= '<a class="carousel-control carousel-control-dps left" role="button" data-slide="prev" href="#wp-bootstrap-carousel-dps-' . $it . '"><span class="icon-prev"></span></a>
-            <a class="carousel-control carousel-control-dps right" role="button" data-slide="next" href="#wp-bootstrap-carousel-dps-' . $it . '"><span class="icon-next"></span></a>';
+            $output .= '
+<a class="left carousel-control carousel-control-dps" role="button" data-slide="prev" href="#wp-bootstrap-carousel-dps-' . $it . '">
+    <span class="glyphicon glyphicon-chevron-left icon-prev" aria-hidden="true"></span>
+    <span class="sr-only">' . __( 'Previous' ) . '</span>
+</a>
+<a class="right carousel-control carousel-control-dps" role="button" data-slide="next" href="#wp-bootstrap-carousel-dps-' . $it . '">
+    <span class="glyphicon glyphicon-chevron-right icon-next" aria-hidden="true"></span>
+    <span class="sr-only">' . __( 'Next' ) . '</span>
+</a>';
         }
 
         // close carousel outer div
