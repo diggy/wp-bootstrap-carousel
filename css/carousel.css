@@ -1,10 +1,19 @@
 /**
- * BOOTSTRAP 3.2.0
+ * BOOTSTRAP 3.3.1
  */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
 .carousel-inner > .item > img,
 .carousel-inner > .item > a > img {
   display: block;
-  width: 100% \9;
   max-width: 100%;
   height: auto;
 }
@@ -26,6 +35,37 @@
 .carousel-inner > .item > img,
 .carousel-inner > .item > a > img {
   line-height: 1;
+}
+@media all and (transform-3d), (-webkit-transform-3d) {
+  .carousel-inner > .item {
+    -webkit-transition: -webkit-transform .6s ease-in-out;
+         -o-transition:      -o-transform .6s ease-in-out;
+            transition:         transform .6s ease-in-out;
+
+    -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+    -webkit-perspective: 1000;
+            perspective: 1000;
+  }
+  .carousel-inner > .item.next,
+  .carousel-inner > .item.active.right {
+    left: 0;
+    -webkit-transform: translate3d(100%, 0, 0);
+            transform: translate3d(100%, 0, 0);
+  }
+  .carousel-inner > .item.prev,
+  .carousel-inner > .item.active.left {
+    left: 0;
+    -webkit-transform: translate3d(-100%, 0, 0);
+            transform: translate3d(-100%, 0, 0);
+  }
+  .carousel-inner > .item.next.left,
+  .carousel-inner > .item.prev.right,
+  .carousel-inner > .item.active {
+    left: 0;
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+  }
 }
 .carousel-inner > .active,
 .carousel-inner > .next,
@@ -200,8 +240,64 @@
   }
 }
 /**
- * WORDPRESS
+ * WORDPRESS DEFAULT THEMES
  */
+/* Twenty Fifteen  */
+.wpbc-twentyfifteen .carousel-post-title a,
+.wpbc-twentyfifteen .entry-content .carousel-post-title a,
+.wpbc-twentyfifteen .page-content .carousel-post-title a {
+    color: #fff;
+    border-bottom: 0 none;
+}
+.wpbc-twentyfifteen .carousel-caption p a,
+.wpbc-twentyfifteen .entry-content .carousel-caption p a,
+.wpbc-twentyfifteen .page-content .carousel-caption p a {
+    color: #fff;
+    border-color: #fff;
+}
+.wpbc-twentyfifteen .carousel-caption p {
+    font-size:100%;
+}
+
+/** Twenty Fifteen Tablet Small 740px */
+@media screen and (min-width: 46.25em) {
+	.wpbc-twentyfifteen .carousel-caption p {
+		font-size: 14px;
+		font-size: 1.4rem;
+		line-height: 1.5;
+	}
+}
+/** Twenty Fifteen Tablet Large 880px */
+@media screen and (min-width: 55em) {
+	.wpbc-twentyfifteen .carousel-caption p {
+		font-size: 16px;
+		font-size: 1.6rem;
+	}
+}
+/** Twenty Fifteen Desktop Small 955px */
+@media screen and (min-width: 59.6875em) {
+	.wpbc-twentyfifteen .carousel-caption p {
+		font-size: 12px;
+		font-size: 1.2rem;
+	}
+}
+/** Twenty Fifteen Desktop Medium 1100px */
+@media screen and (min-width: 68.75em) {
+	.wpbc-twentyfifteen .carousel-caption p {
+		font-size: 14px;
+		font-size: 1.4rem;
+	}
+}
+/** Twenty Fifteen Desktop Large 1240px */
+@media screen and (min-width: 77.5em) {
+	.wpbc-twentyfifteen .carousel-caption p {
+		font-size: 16px;
+		font-size: 1.6rem;
+	}
+}
+
+/* other default themes */
+
 .wpbc-twentythirteen .entry-content ol.carousel-indicators,
 .wpbc-twentytwelve .entry-content ol.carousel-indicators {
     line-height: 1;
